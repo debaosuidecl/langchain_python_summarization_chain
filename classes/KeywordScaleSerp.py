@@ -2,9 +2,10 @@ from functions import request
 import json
 
 class KeywordScaleSerp:
-    def __init__(self, keyword, api_key):
+    def __init__(self, keyword, api_key, link_count):
         self.keyword = keyword
         self.api_key = api_key
+        self.link_count = link_count
 
     def get_keyword_scaleserp(self):
         print("fetching")
@@ -13,4 +14,4 @@ class KeywordScaleSerp:
             'api_key': self.api_key
         })
         if api_result != False: 
-            return json.loads(api_result)['organic_results'][:5]
+            return json.loads(api_result)['organic_results'][:self.link_count]

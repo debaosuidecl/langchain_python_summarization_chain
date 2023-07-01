@@ -9,7 +9,7 @@ from selenium.webdriver.chrome.options import Options
 from dotenv import dotenv_values
 
 
-def main(keyword):
+def main(keyword, link_count):
     env_vars = dotenv_values()
 
     #env variables
@@ -22,7 +22,7 @@ def main(keyword):
     chrome_service = Service(chromedriver_path)
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
     # get the keyword items in the array
-    keywordScaleSerp = KSSModule.KeywordScaleSerp(keyword, serp_api_key)
+    keywordScaleSerp = KSSModule.KeywordScaleSerp(keyword, serp_api_key, link_count=link_count)
     res = keywordScaleSerp.get_keyword_scaleserp()
     if res == False : return print("Could not find key word array")
     # Load the web pages
@@ -30,9 +30,10 @@ def main(keyword):
     with open(file_path, 'w') as file:
     # Append the string to the file
         file.write("")
-    for x in res:
+    # index = 0
+    for index,x in enumerate(res):
         link = x['link']
-        print(f"processing this link now {link}")
+        print(f"{index+1}. processing this link now {link}")
         try:
             driver.get(link)  
             WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.TAG_NAME, 'body')))
@@ -56,4 +57,4 @@ def main(keyword):
     print(summarizer.results)
     return summarizer.results
     
-main(keyword="Pitboss", linkcount= 10)
+main(keyword="Pitboss", link_count= 10)
