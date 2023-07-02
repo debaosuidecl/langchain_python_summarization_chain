@@ -9,7 +9,7 @@ from selenium.webdriver.chrome.options import Options
 from dotenv import dotenv_values
 
 
-def main(keyword, link_count):
+def main(keyword,location, link_count):
     env_vars = dotenv_values()
     #env variables
     openai_api_key = env_vars["openai_api_key"]
@@ -21,7 +21,7 @@ def main(keyword, link_count):
     chrome_service = Service(chromedriver_path)
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
     # get the keyword items in the array
-    keywordScaleSerp = KSSModule.KeywordScaleSerp(keyword, serp_api_key, link_count=link_count)
+    keywordScaleSerp = KSSModule.KeywordScaleSerp(keyword, serp_api_key, link_count=link_count, location=location)
     res = keywordScaleSerp.get_keyword_scaleserp()
     if res == False : return print("Could not find key word array")
     # Load the web pages
@@ -52,4 +52,4 @@ def main(keyword, link_count):
     print(summarizer.results)
     return summarizer.results
     
-main(keyword="BBQ", link_count= 10)
+main(keyword="BBQ", location="Western Australia", link_count= 3)
