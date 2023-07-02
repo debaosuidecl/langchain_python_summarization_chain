@@ -11,7 +11,6 @@ from dotenv import dotenv_values
 
 def main(keyword, link_count):
     env_vars = dotenv_values()
-
     #env variables
     openai_api_key = env_vars["openai_api_key"]
     serp_api_key = env_vars["serp_api_key"]
@@ -39,7 +38,6 @@ def main(keyword, link_count):
             WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.TAG_NAME, 'body')))
             # Find all elements that contain text
             texts =  driver.find_element(By.XPATH, "/html/body").text
-            print(texts)
             file_path = "data/output_final.txt"
             with open(file_path, 'a') as file:
             # Append the string to the file
@@ -49,12 +47,9 @@ def main(keyword, link_count):
             print(e)
     driver.quit()
     summarizer = LCSModule.LangChainSummariser(openai_api_key=openai_api_key,  filepath="data/output_final.txt" )
-    summarizer.load()
-    summarizer.split()
-    summarizer.initChain()
     print("summarizing")
-    summarizer.summarize()
+    summarizer.load().split().initChain().summarize()
     print(summarizer.results)
     return summarizer.results
     
-main(keyword="Pitboss", link_count= 10)
+main(keyword="BBQ", link_count= 10)

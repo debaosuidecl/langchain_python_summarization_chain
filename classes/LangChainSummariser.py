@@ -15,14 +15,14 @@ class LangChainSummariser:
     def load(self):
         loader = TextLoader(self.filepath)
         self.documents = loader.load()
-        return self.documents
-
+        return self
     def split(self):
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=700, chunk_overlap=50)
         self.texts = text_splitter.split_documents(self.documents)
-        return self.texts
+        return self
     def initChain(self):
         self.chain = load_summarize_chain(self.llm, chain_type="map_reduce", verbose=False)
+        return self
     def summarize(self):
         self.results =   self.chain.run(self.texts)
-        return self.results
+        return self
